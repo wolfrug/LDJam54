@@ -16,14 +16,16 @@ public enum MovementDirections {
 
 public struct MovementArgs {
     public Entity owner;
+
+    public MovementDirections direction;
     public District targetDistrict;
     public District originDistrict;
     public bool wreckOnEntry;
-
     public bool attackMove;
 
-    public MovementArgs (Entity setOwner = null, District setTarget = null, District setOrigin = null, bool setWreckOnEntry = false, bool setAttackMove = false) {
+    public MovementArgs (Entity setOwner = null, MovementDirections setDirection = MovementDirections.NONE, District setTarget = null, District setOrigin = null, bool setWreckOnEntry = false, bool setAttackMove = false) {
         owner = setOwner;
+        direction = setDirection;
         targetDistrict = setTarget;
         originDistrict = setOrigin;
         wreckOnEntry = setWreckOnEntry;

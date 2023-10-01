@@ -16,3 +16,8 @@ MonoBehaviour:
   m_type: 5000
   m_value: 1
   m_prefab: {fileID: 1610995096158908319, guid: ad19ff5edb7a80e43b6b18b51fc7242f, type: 3}
+  m_health: 1
+  m_movementPoints: 1
+  m_canMoveInOcean: 0
+  m_entityMovementActions: []
+  m_entityAttackActions: []

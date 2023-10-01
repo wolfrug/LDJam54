@@ -11,6 +11,8 @@ using UnityEngine.Events;
 
 [System.Serializable] public class DistrictEvent : UnityEvent<DistrictEventArgs> { }
 
+[System.Serializable] public class MovementEvent : UnityEvent<MovementArgs> { }
+
 public class GlobalEvents : MonoBehaviour {
 
     // Game State events
@@ -30,6 +32,9 @@ public class GlobalEvents : MonoBehaviour {
     public static DistrictEvent OnDistrictMoved = new DistrictEvent ();
     public static DistrictEvent OnDistrictWrecked = new DistrictEvent ();
     public static DistrictEvent OnDistrictMoveFail = new DistrictEvent ();
+
+    // Movement events
+    public static MovementEvent OnPlayerClickMovement = new MovementEvent ();
 
     public static void InvokeOnGameStateChanged (GameState newState) {
         OnGameStateChanged.Invoke (newState);
@@ -67,5 +72,10 @@ public class GlobalEvents : MonoBehaviour {
     }
     public static void InvokeOnDistrictMoveFailed (DistrictEventArgs args) {
         OnDistrictMoveFail.Invoke (args);
+    }
+
+    // Movement invoke events
+    public static void InvokeOnPlayerClickMovement (MovementArgs args) {
+        OnPlayerClickMovement.Invoke (args);
     }
 }

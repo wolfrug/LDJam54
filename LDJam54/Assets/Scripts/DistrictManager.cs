@@ -189,12 +189,29 @@ public class DistrictManager : MonoBehaviour {
     }
 
     public bool CanMoveEntity (MovementArgs args) {
+        // Allow to check by direction
+        if (args.direction != MovementDirections.NONE && args.targetDistrict == null) {
+            args.targetDistrict = GetDistrictInDirection (args.originDistrict.m_gridLocation, args.direction);
+        }
+        // trying to move into same spot??
+        if (args.targetDistrict == args.originDistrict) {
+            return false;
+        }
+        // Tanks trying to enter ocean
+        if (args.targetDistrict.m_data.m_type == DistrictType.OCEAN && !args.owner.m_data.m_canMoveInOcean) {
+            return false;
+        }
+        // Friendly units trying to enter monster (but not the other way around)
+        if (args.targetDistrict.m_entitiesContained.Find ((x) => x.m_data.m_faction == EntityFaction.ENEMY && args.owner.m_data.m_faction == EntityFaction.PLAYER)) {
+            return false;
+        }
+        // Specific districts that block in- or outgoing traffic
         MovementDirections outGoingDirection = GetRelativeDirection (args.originDistrict.m_gridLocation, args.targetDistrict.m_gridLocation);
         MovementDirections incomingDirection = GetRelativeDirection (args.targetDistrict.m_gridLocation, args.originDistrict.m_gridLocation);
-        if (!args.originDistrict.m_data.m_blockedDirectionsOut.Contains (outGoingDirection) && !args.targetDistrict.m_data.m_blockedDirectionsIn.Contains (incomingDirection)) {
-            return true;
+        if (args.originDistrict.m_data.m_blockedDirectionsOut.Contains (outGoingDirection) || args.targetDistrict.m_data.m_blockedDirectionsIn.Contains (incomingDirection)) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void SetEntityLocation (Entity targetEntity, GridLocations targetLocation) { // for e.g. when you spawn a new entity

@@ -23,9 +23,9 @@ public class EntityMovement : EntityComponent {
         District targetDistrict = null;
         if (GridManager.instance.HasTile (targetLocation)) { // Tile available check
             targetDistrict = DistrictManager.instance.GetDistrict (targetLocation);
-            if (DistrictManager.instance.CanMoveEntity (new MovementArgs (Entity, targetDistrict, m_currentDistrict))) {
+            if (DistrictManager.instance.CanMoveEntity (new MovementArgs (Entity, MovementDirections.NONE, targetDistrict, m_currentDistrict))) {
                 if (targetDistrict != null) { // Just in case, although this shouldn't be a problem
-                    Vector3 targetPos = targetDistrict.MoveEntity (new MovementArgs (Entity, targetDistrict, m_currentDistrict));
+                    Vector3 targetPos = targetDistrict.MoveEntity (new MovementArgs (Entity, MovementDirections.NONE, targetDistrict, m_currentDistrict));
                     transform.DOMove (targetPos, 1);
                     return true;
                 }
@@ -49,11 +49,25 @@ public class EntityMovement : EntityComponent {
             if (squares == 1) {
                 MoveTo (targetDistrict.m_gridLocation);
             } else {
-                Vector3 targetPos = targetDistrict.MoveEntity (new MovementArgs (Entity, targetDistrict, m_currentDistrict));
+                Vector3 targetPos = targetDistrict.MoveEntity (new MovementArgs (Entity, MovementDirections.NONE, targetDistrict, m_currentDistrict));
                 m_currentDistrict = targetDistrict;
                 transform.DOMove (targetPos, 1).OnComplete (() => MoveInDirection (direction, squares - 1)).SetEase (Ease.Linear);
             }
         }
+    }
+
+    [NaughtyAttributes.Button]
+    public List<MovementDirections> GetPermittedMovementDirections () {
+        List<MovementDirections> returnList = new List<MovementDirections> { MovementDirections.LEFT, MovementDirections.RIGHT, MovementDirections.UP, MovementDirections.DOWN };
+        foreach (MovementDirections dir in new List<MovementDirections> (returnList)) {
+            Debug.Log ("[EntityMovement] Checking if can move in direction " + dir.ToString ());
+            if (!DistrictManager.instance.CanMoveEntity (new MovementArgs (Entity, dir, null, m_currentDistrict))) {
+                Debug.Log ("[EntityMovement] Cannot move " + dir.ToString ());
+                returnList.Remove (dir);
+            }
+        }
+        Debug.Log ("[EntityMovement] Received permitted movement directions: " + string.Join ("\n", returnList));
+        return returnList;
     }
 
     [NaughtyAttributes.Button]
