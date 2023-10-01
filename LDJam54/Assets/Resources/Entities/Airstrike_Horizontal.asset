@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e101c3b7aecae43b6455624613a537, type: 3}
-  m_Name: MeleeMech
+  m_Name: Airstrike_Horizontal
   m_EditorClassIdentifier: 
-  m_displayName: Varangian-4
-  m_type: 1000
-  m_value: 4
-  m_prefab: {fileID: 6522415710980274508, guid: ddbc56caf0f47fa4f9667c87f1345bea, type: 3}
+  m_displayName: Airstrike (Horizontal)
+  m_type: 6000
+  m_value: 1
+  m_prefab: {fileID: 8606653534684397142, guid: f9f49f24ae2b49a43a26de3875eef1da, type: 3}

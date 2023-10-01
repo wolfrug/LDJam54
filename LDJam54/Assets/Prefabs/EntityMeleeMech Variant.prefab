@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EntityMeleeMech Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1881971421402853204, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3611338234785519367, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -56,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -392694392, guid: e36253b581e1da446be166c0dacb2ecc, type: 3}
+    - target: {fileID: 6466839186114163365, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -9,7 +9,8 @@ public enum EntityType {
     TANK = 3000,
     MONSTER_CERATOLISK = 4000,
     TRAP = 5000,
-    AIRSTRIKE = 6000,
+    AIRSTRIKE_HORIZONTAL = 6000,
+    AIRSTRIKE_VERTICAL = 6001,
 
 }
 
@@ -18,5 +19,6 @@ public class EntityData : ScriptableObject {
     public string ID => this.name;
     public string m_displayName = "";
     public EntityType m_type = EntityType.NONE;
+    public int m_value = 1; // Used to determine which is destroyed when there are too many
     public GameObject m_prefab;
 }
