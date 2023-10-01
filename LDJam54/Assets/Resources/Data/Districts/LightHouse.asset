@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: LightHouse
   m_EditorClassIdentifier: 
   m_displayName: Sickle Point Lighthouse
+  m_type: 3000
+  m_prefab: {fileID: 0}
   m_gridLocation: 15
   m_wreckable: 0
   m_autoWreckOnEnter: 0

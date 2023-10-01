@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: ShoddyHouses
   m_EditorClassIdentifier: 
   m_displayName: Knucklestump Row
+  m_type: 3000
+  m_prefab: {fileID: 0}
   m_gridLocation: 16
   m_wreckable: 1
   m_autoWreckOnEnter: 1

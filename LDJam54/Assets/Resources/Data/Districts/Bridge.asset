@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Bridge
   m_EditorClassIdentifier: 
   m_displayName: Bowaker Bridge
+  m_type: 3000
+  m_prefab: {fileID: 0}
   m_gridLocation: 17
   m_wreckable: 1
   m_autoWreckOnEnter: 0

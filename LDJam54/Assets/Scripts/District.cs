@@ -2,14 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct DistrictEventArgs {
+    public District owner;
+    public District target;
+    public Entity instigator;
+
+    public DistrictEventArgs (District setOwner = null, District setTarget = null, Entity setInstigator = null) {
+        owner = setOwner;
+        target = setTarget;
+        instigator = setInstigator;
+    }
+}
+
 public class District : MonoBehaviour {
     public DistrictData m_data;
     public GridLocations m_gridLocation = GridLocations.None;
     public Vector3Int m_gridPosition;
+    public GameObject m_wreckedIcon;
     public List<Entity> m_entitiesContained = new List<Entity> { };
-
     public List<Transform> m_entityPositions = new List<Transform> { };
     private Dictionary<Transform, Entity> m_occupancyDictionary = new Dictionary<Transform, Entity> { };
+    private bool m_wrecked = false;
 
     void Awake () {
         foreach (Transform tra in m_entityPositions) {
@@ -22,6 +35,8 @@ public class District : MonoBehaviour {
             m_entitiesContained.Add (newEntity);
             Transform randomFreePosition = GetRandomFreeEntityPosition ();
             m_occupancyDictionary[randomFreePosition] = newEntity;
+            newEntity.entityMovement.m_currentDistrict = this;
+            GlobalEvents.InvokeOnDistrictEntered (new DistrictEventArgs (this, null, newEntity));
             return randomFreePosition.position;
         }
         return new Vector3 (-1, -1, -1);
@@ -41,7 +56,21 @@ public class District : MonoBehaviour {
                     m_occupancyDictionary[targetPosition] = null;
                 }
             }
+            GlobalEvents.InvokeOnDistrictExited (new DistrictEventArgs (this, null, newEntity));
         }
+    }
+
+    public Vector3 MoveEntity (MovementArgs args) {
+        foreach (Entity entity in new List<Entity> (m_entitiesContained)) {
+            entity.MoveIntoEntity (args);
+            if (entity.entityHealth.IsDead) {
+                RemoveEntity (entity);
+            }
+        }
+        Vector3 returnVal = AddEntity (args.owner);
+        args.originDistrict.RemoveEntity (args.owner);
+        GlobalEvents.InvokeOnDistrictMoved (new DistrictEventArgs (this, args.originDistrict, args.owner));
+        return returnVal;
     }
 
     Transform GetRandomFreeEntityPosition () {
@@ -51,5 +80,27 @@ public class District : MonoBehaviour {
             }
         }
         return transform;
+    }
+
+    public bool Wrecked {
+        get {
+            return m_wrecked;
+        }
+        set {
+            if (value && !m_wrecked) {
+                GlobalEvents.InvokeOnDistrictWrecked (new DistrictEventArgs (this));
+            }
+            m_wrecked = value;
+            m_wreckedIcon.SetActive (value);
+        }
+    }
+
+    public bool AttemptWreckDistrict () {
+        if (m_data.m_wreckable) {
+            Wrecked = true;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

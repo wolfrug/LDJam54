@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Plummet
   m_EditorClassIdentifier: 
   m_displayName: Widow's Plummet
+  m_type: 3000
+  m_prefab: {fileID: 0}
   m_gridLocation: 3
   m_wreckable: 0
   m_autoWreckOnEnter: 0

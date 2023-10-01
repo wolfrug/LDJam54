@@ -104,7 +104,7 @@ public class GridManager : MonoBehaviour {
 
     public GridLocations GetEnum (Vector3Int location) {
         string X = "None";
-        string Y = (Mathf.Abs (location.y) + 1).ToString ();
+        string Y = (Mathf.Clamp (Mathf.Abs (location.y) + 1, 1, m_gridSize.y)).ToString ();
         GridLocations returnVal = GridLocations.None;
         switch (location.x) {
             case 0:

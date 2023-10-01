@@ -108,6 +108,67 @@ public class DistrictManager : MonoBehaviour {
         return MovementDirections.NONE;
     }
 
+    public District GetDistrictInDirection (GridLocations startLocation, MovementDirections direction, bool allowDiagonal = false) {
+        District startDistrict = GetDistrict (startLocation);
+        Vector3Int targetLoc = startDistrict.m_gridPosition;
+        switch (direction) {
+            case MovementDirections.DOWN:
+                {
+                    targetLoc.y -= 1;
+                    break;
+                }
+            case MovementDirections.UP:
+                {
+                    targetLoc.y += 1;
+                    break;
+                }
+            case MovementDirections.RIGHT:
+                {
+                    targetLoc.x += 1;
+                    break;
+                }
+            case MovementDirections.LEFT:
+                {
+                    targetLoc.x -= 1;
+                    break;
+                }
+        }
+        if (allowDiagonal) {
+            switch (direction) {
+                case MovementDirections.DIAGONAL_DOWN_RIGHT:
+                    {
+                        targetLoc.y -= 1;
+                        targetLoc.x += 1;
+                        break;
+                    }
+                case MovementDirections.DIAGONAL_DOWN_LEFT:
+                    {
+                        targetLoc.y -= 1;
+                        targetLoc.x -= 1;
+                        break;
+                    }
+                case MovementDirections.DIAGONAL_UP_RIGHT:
+                    {
+                        targetLoc.y += 1;
+                        targetLoc.x += 1;
+                        break;
+                    }
+                case MovementDirections.DIAGONAL_UP_LEFT:
+                    {
+                        targetLoc.y += 1;
+                        targetLoc.x -= 1;
+                        break;
+                    }
+            }
+        }
+        District endDistrict = GetDistrict (targetLoc);
+        if (endDistrict != null) {
+            return endDistrict;
+        } else {
+            return startDistrict;
+        }
+    }
+
     public bool IsAdjacent (GridLocations startLocation, GridLocations endLocation, bool allowDiagonal = false) {
         District startDistrict = GetDistrict (startLocation);
         District endDistrict = GetDistrict (endLocation);
@@ -125,7 +186,21 @@ public class DistrictManager : MonoBehaviour {
             return false;
         }
         return true;
+    }
 
+    public bool CanMoveEntity (MovementArgs args) {
+        MovementDirections outGoingDirection = GetRelativeDirection (args.originDistrict.m_gridLocation, args.targetDistrict.m_gridLocation);
+        MovementDirections incomingDirection = GetRelativeDirection (args.targetDistrict.m_gridLocation, args.originDistrict.m_gridLocation);
+        if (!args.originDistrict.m_data.m_blockedDirectionsOut.Contains (outGoingDirection) && !args.targetDistrict.m_data.m_blockedDirectionsIn.Contains (incomingDirection)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void SetEntityLocation (Entity targetEntity, GridLocations targetLocation) { // for e.g. when you spawn a new entity
+        District targetDistrict = GetDistrict (targetLocation);
+        Vector3 location = targetDistrict.AddEntity (targetEntity);
+        targetEntity.transform.position = location;
     }
 
     [NaughtyAttributes.Button]

@@ -21,4 +21,7 @@ public class EntityData : ScriptableObject {
     public EntityType m_type = EntityType.NONE;
     public int m_value = 1; // Used to determine which is destroyed when there are too many
     public GameObject m_prefab;
+    public int m_health = 1;
+    public List<EntityActionData> m_entityMovementActions = new List<EntityActionData> { };
+    public List<EntityActionData> m_entityAttackActions = new List<EntityActionData> { };
 }

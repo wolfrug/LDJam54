@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum MovementDirections{
+public enum MovementDirections {
     NONE = 0000,
     UP = 1000,
     DIAGONAL_UP_RIGHT = 1001,
@@ -15,7 +14,23 @@ public enum MovementDirections{
     LEFT = 4000,
 }
 
-public class MovemementManager : MonoBehaviour {
+public struct MovementArgs {
+    public Entity owner;
+    public District targetDistrict;
+    public District originDistrict;
+    public bool wreckOnEntry;
 
+    public bool attackMove;
+
+    public MovementArgs (Entity setOwner = null, District setTarget = null, District setOrigin = null, bool setWreckOnEntry = false, bool setAttackMove = false) {
+        owner = setOwner;
+        targetDistrict = setTarget;
+        originDistrict = setOrigin;
+        wreckOnEntry = setWreckOnEntry;
+        attackMove = setAttackMove;
+    }
+}
+
+public class MovemementManager : MonoBehaviour {
 
 }

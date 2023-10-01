@@ -13,4 +13,13 @@ MonoBehaviour:
   m_Name: BaseDistrict
   m_EditorClassIdentifier: 
   m_displayName: City
+  m_type: 2000
+  m_prefab: {fileID: 0}
   m_gridLocation: 0
+  m_wreckable: 1
+  m_autoWreckOnEnter: 0
+  m_stunOnEnter: 0
+  m_damageMonsterPerTurn: 0
+  m_doubleMonsterMovement: 0
+  m_blockedDirectionsOut: 
+  m_blockedDirectionsIn: 

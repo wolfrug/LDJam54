@@ -9,7 +9,7 @@ public class InkInventoryItemData : ScriptableObject {
     public InkStoryData m_storyData;
     public string m_id;
     public string m_displayName;
-    //[NaughtyAttributes.ShowAssetPreview]
+    [NaughtyAttributes.ShowAssetPreview]
     public Sprite m_image;
     [TextArea]
     public string m_description;
