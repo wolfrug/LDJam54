@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: Enfield-C MBT
   m_type: 3000
+  m_faction: 1000
   m_value: 1
   m_prefab: {fileID: 6321889188258898262, guid: defe1487afa7f864191c33230f03c430, type: 3}
   m_health: 1
   m_movementPoints: 1
   m_canMoveInOcean: 0
+  m_animator: {fileID: 0}
   m_entityMovementActions: []
   m_entityAttackActions: []

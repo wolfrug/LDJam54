@@ -6,17 +6,41 @@ using UnityEngine;
 public class EntityMovement : EntityComponent {
 
     public District m_currentDistrict;
-
     public List<EntityActionData> m_movementActions = new List<EntityActionData> { };
     private List<EntityActionData> m_remainingActions = new List<EntityActionData> { };
     private List<EntityActionData> m_usedActions = new List<EntityActionData> { };
+    [SerializeField] private int m_movementActionsLeft = 1;
     protected override void Init () {
         base.Init ();
         //Vector3Int currenLocation = GridManager.instance.WorldSpaceToGrid (Entity.transform.position);
         //m_currentDistrict = DistrictManager.instance.GetDistrict (currenLocation);
         m_movementActions = new List<EntityActionData> (Entity.m_data.m_entityMovementActions);
         m_remainingActions = new List<EntityActionData> (m_movementActions);
+        m_movementActionsLeft = Entity.m_data.m_movementPoints;
+        GlobalEvents.OnPlayerClickMovement.AddListener (PlayerMoveInput);
         //MoveTo (m_currentDistrict.m_gridLocation);
+    }
+
+    public void PlayerMoveInput (MovementArgs args) {
+        if (args.owner == Entity) {
+            if (m_movementActionsLeft > 0) {
+                MoveInDirection (args.direction);
+                m_movementActionsLeft--;
+            }
+        }
+    }
+
+    public int MovementLeft {
+        get {
+            return m_movementActionsLeft;
+        }
+        set {
+            m_movementActionsLeft = value;
+        }
+    }
+
+    public void ResetMovement () {
+        MovementLeft = Entity.m_data.m_movementPoints;
     }
 
     public bool MoveTo (Vector3Int targetLocation) {
@@ -49,9 +73,11 @@ public class EntityMovement : EntityComponent {
             if (squares == 1) {
                 MoveTo (targetDistrict.m_gridLocation);
             } else {
-                Vector3 targetPos = targetDistrict.MoveEntity (new MovementArgs (Entity, MovementDirections.NONE, targetDistrict, m_currentDistrict));
-                m_currentDistrict = targetDistrict;
-                transform.DOMove (targetPos, 1).OnComplete (() => MoveInDirection (direction, squares - 1)).SetEase (Ease.Linear);
+                if (DistrictManager.instance.CanMoveEntity (new MovementArgs (Entity, MovementDirections.NONE, targetDistrict, m_currentDistrict))) {
+                    Vector3 targetPos = targetDistrict.MoveEntity (new MovementArgs (Entity, MovementDirections.NONE, targetDistrict, m_currentDistrict));
+                    m_currentDistrict = targetDistrict;
+                    transform.DOMove (targetPos, 1).OnComplete (() => MoveInDirection (direction, squares - 1)).SetEase (Ease.Linear);
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Animations;
 
 public enum EntityType {
     NONE = 0000,
@@ -30,6 +31,7 @@ public class EntityData : ScriptableObject {
     public int m_health = 1;
     public int m_movementPoints = 1;
     public bool m_canMoveInOcean = true;
+    public AnimatorController m_animator;
     public List<EntityActionData> m_entityMovementActions = new List<EntityActionData> { };
     public List<EntityActionData> m_entityAttackActions = new List<EntityActionData> { };
 }

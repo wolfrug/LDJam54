@@ -130,12 +130,12 @@ public class GridCameraController : MonoBehaviour {
         EventSystem.current.RaycastAll (pointerEventData, raycastResults);
 
         if (raycastResults.Count > 0) {
-            // Debug.LogWarning ("Hit UI, quitting.");
+            //Debug.LogWarning ("Hit UI, quitting.");
             return info;
         }
         if (hit.collider != null) {
             //Debug.Log (hit.collider);
-            GridManager manager = hit.transform.GetComponentInParent<GridManager> () as GridManager;
+            GridManager manager = GridManager.instance;
             if (manager != null) {
                 TileBase tile = manager.GetTile (hit.point);
                 if (tile != null) {

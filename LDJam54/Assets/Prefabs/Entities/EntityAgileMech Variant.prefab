@@ -16,6 +16,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2876596539540566371, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Size.x
+      value: 5.234338
+      objectReference: {fileID: 0}
+    - target: {fileID: 2876596539540566371, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Size.y
+      value: 6.9502134
+      objectReference: {fileID: 0}
+    - target: {fileID: 2876596539540566371, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.09686375
+      objectReference: {fileID: 0}
+    - target: {fileID: 2876596539540566371, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.096863866
+      objectReference: {fileID: 0}
     - target: {fileID: 3611338234785519367, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

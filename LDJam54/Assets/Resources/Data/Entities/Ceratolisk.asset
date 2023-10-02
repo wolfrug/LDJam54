@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: Ceratolisk
   m_type: 4000
+  m_faction: 2000
   m_value: 1
   m_prefab: {fileID: 2328255096363083819, guid: c3f98fb45b3441947b107674e24ee1ce, type: 3}
   m_health: 13
+  m_movementPoints: 1
+  m_canMoveInOcean: 1
+  m_animator: {fileID: 0}
   m_entityMovementActions:
   - {fileID: 11400000, guid: 832f3903aa9d21847a34c13c2a7ea0d9, type: 2}
   - {fileID: 11400000, guid: 832f3903aa9d21847a34c13c2a7ea0d9, type: 2}

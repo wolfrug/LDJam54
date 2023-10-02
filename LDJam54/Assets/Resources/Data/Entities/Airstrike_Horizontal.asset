@@ -14,5 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: Airstrike (Horizontal)
   m_type: 6000
+  m_faction: 1000
   m_value: 1
   m_prefab: {fileID: 8606653534684397142, guid: f9f49f24ae2b49a43a26de3875eef1da, type: 3}
+  m_health: 1
+  m_movementPoints: 1
+  m_canMoveInOcean: 1
+  m_animator: {fileID: 0}
+  m_entityMovementActions: []
+  m_entityAttackActions: []

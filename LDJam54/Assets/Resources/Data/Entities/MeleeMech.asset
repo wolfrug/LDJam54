@@ -14,5 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: Varangian-4
   m_type: 1000
+  m_faction: 1000
   m_value: 4
   m_prefab: {fileID: 6522415710980274508, guid: ddbc56caf0f47fa4f9667c87f1345bea, type: 3}
+  m_health: 1
+  m_movementPoints: 1
+  m_canMoveInOcean: 1
+  m_animator: {fileID: 0}
+  m_entityMovementActions: []
+  m_entityAttackActions: []

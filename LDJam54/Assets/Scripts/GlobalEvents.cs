@@ -17,6 +17,7 @@ public class GlobalEvents : MonoBehaviour {
 
     // Game State events
     public static GameStateEvent OnGameStateChanged = new GameStateEvent ();
+    public static GameStateEvent OnEndPlayerTurn = new GameStateEvent ();
     // Action Events
     public static ActionEvent OnActionPerformed = new ActionEvent ();
     public static ActionEvent OnMonsterMovementCardDrawn = new ActionEvent ();
@@ -25,6 +26,10 @@ public class GlobalEvents : MonoBehaviour {
     public static EntityEvent OnEntitySpawned = new EntityEvent ();
     public static EntityEvent OnEntityHurt = new EntityEvent ();
     public static EntityEvent OnEntityKilled = new EntityEvent ();
+
+    public static EntityEvent OnEntitySelected = new EntityEvent ();
+    public static EntityEvent OnEntityHoverOn = new EntityEvent ();
+    public static EntityEvent OnEntityHoverOff = new EntityEvent ();
 
     // District events
     public static DistrictEvent OnDistrictEntered = new DistrictEvent ();
@@ -36,8 +41,14 @@ public class GlobalEvents : MonoBehaviour {
     // Movement events
     public static MovementEvent OnPlayerClickMovement = new MovementEvent ();
 
+    public static MovementEvent OnPlayerClickAttack = new MovementEvent ();
+
+    // Game state events
     public static void InvokeOnGameStateChanged (GameState newState) {
         OnGameStateChanged.Invoke (newState);
+    }
+    public static void InvokeOnEndPlayerTurn (GameState newState) {
+        OnEndPlayerTurn.Invoke (newState);
     }
     // Action event invokes
     public static void InvokeOnActionPerformed (ActionResultArgs args) {
@@ -46,7 +57,7 @@ public class GlobalEvents : MonoBehaviour {
     public static void InvokeOnMonsterMovementCardDrawn (ActionResultArgs args) {
         OnMonsterMovementCardDrawn.Invoke (args);
     }
-
+    // Entity event invokes
     public static void InvokeOnEntityHurt (EntityEventArgs args) {
         OnEntityHurt.Invoke (args);
     }
@@ -55,6 +66,15 @@ public class GlobalEvents : MonoBehaviour {
     }
     public static void InvokeOnEntityKilled (EntityEventArgs args) {
         OnEntityKilled.Invoke (args);
+    }
+    public static void InvokeOnEntitySelected (EntityEventArgs args) {
+        OnEntitySelected.Invoke (args);
+    }
+    public static void InvokeOnEntityHoverOn (EntityEventArgs args) {
+        OnEntityHoverOn.Invoke (args);
+    }
+    public static void InvokeOnEntityHoverOff (EntityEventArgs args) {
+        OnEntityHoverOff.Invoke (args);
     }
 
     // District invoke events
@@ -77,5 +97,8 @@ public class GlobalEvents : MonoBehaviour {
     // Movement invoke events
     public static void InvokeOnPlayerClickMovement (MovementArgs args) {
         OnPlayerClickMovement.Invoke (args);
+    }
+    public static void InvokeOnPlayerClickAttack (MovementArgs args) {
+        OnPlayerClickAttack.Invoke (args);
     }
 }

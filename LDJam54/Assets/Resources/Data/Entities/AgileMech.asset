@@ -14,5 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_displayName: The Scythian
   m_type: 2000
+  m_faction: 1000
   m_value: 5
   m_prefab: {fileID: 1607759117319711408, guid: 13447ca138f885d4aa6b1ef2a885532c, type: 3}
+  m_health: 1
+  m_movementPoints: 1
+  m_canMoveInOcean: 1
+  m_animator: {fileID: 0}
+  m_entityMovementActions: []
+  m_entityAttackActions: []

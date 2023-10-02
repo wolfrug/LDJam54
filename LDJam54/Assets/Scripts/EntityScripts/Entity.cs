@@ -24,10 +24,12 @@ public struct EntityEventArgs {
 public class Entity : MonoBehaviour {
 
     public EntityData m_data;
+
+    public PlayerMovementController m_playerMovementController;
     public EntityMovement entityMovement;
     public EntityAttack entityAttack;
-
     public EntityHealth entityHealth;
+    public EntityEffects entityEffects;
     public bool draggable = true;
     public virtual void Start () {
 
@@ -41,6 +43,7 @@ public class Entity : MonoBehaviour {
         entityMovement = gameObject.AddComponent<EntityMovement> ();
         entityAttack = gameObject.AddComponent<EntityAttack> ();
         entityHealth = gameObject.AddComponent<EntityHealth> ();
+        entityEffects = gameObject.AddComponent<EntityEffects> ();
     }
     public GridLocations Location {
         get {

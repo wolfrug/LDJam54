@@ -7,10 +7,37 @@ public class EntityAttack : EntityComponent {
     private List<EntityActionData> m_remainingActions = new List<EntityActionData> { };
     private List<EntityActionData> m_usedActions = new List<EntityActionData> { };
 
+    private int m_attacksLeft = 1;
+
     protected override void Init () {
         base.Init ();
         m_attackActions = new List<EntityActionData> (Entity.m_data.m_entityAttackActions);
         m_remainingActions = new List<EntityActionData> (m_attackActions);
+        GlobalEvents.OnPlayerClickAttack.AddListener (PlayerAttackInput);
+    }
+
+    public void PlayerAttackInput (MovementArgs args) {
+        if (args.owner == Entity) {
+            if (m_attacksLeft > 0) {
+                Entity foundEntity = GetAttackableEntity (args.direction);
+                if (foundEntity != null) {
+                    foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs(), Entity, foundEntity, null, "", 1), 0);
+                }
+                m_attacksLeft--;
+            }
+        }
+    }
+    public int AttacksLeft {
+        get {
+            return m_attacksLeft;
+        }
+        set {
+            m_attacksLeft = value;
+        }
+    }
+
+    public void ResetAttacksLeft () {
+        m_attacksLeft = 1;
     }
 
     [NaughtyAttributes.Button]
@@ -35,6 +62,37 @@ public class EntityAttack : EntityComponent {
             }
         }
     }
+
+    public List<MovementDirections> GetPermittedAttackDirections () {
+        List<MovementDirections> returnList = new List<MovementDirections> { };
+        foreach (MovementDirections dir in new List<MovementDirections> { MovementDirections.LEFT, MovementDirections.RIGHT, MovementDirections.UP, MovementDirections.DOWN, MovementDirections.DIAGONAL_UP_RIGHT, MovementDirections.DIAGONAL_UP_LEFT, MovementDirections.DIAGONAL_DOWN_RIGHT, MovementDirections.DIAGONAL_DOWN_LEFT }) {
+            District targetDistrict = DistrictManager.instance.GetDistrictInDirection (Entity.Location, dir, true);
+            if (targetDistrict.m_gridLocation != Entity.Location) {
+                if (GetAttackableEntity (targetDistrict) != null) {
+                    returnList.Add (dir);
+                }
+            }
+        }
+        Debug.Log ("[EntityAttack] Received permitted attack directions: " + string.Join ("\n", returnList));
+        return returnList;
+    }
+
+    public Entity GetAttackableEntity (District targetDistrict) {
+        foreach (Entity targetEntity in targetDistrict.m_entitiesContained) {
+            if (targetEntity.m_data.m_faction != Entity.m_data.m_faction) {
+                return targetEntity;
+            }
+        }
+        return null;
+    }
+    public Entity GetAttackableEntity (MovementDirections direction) {
+        District targetDistrict = DistrictManager.instance.GetDistrictInDirection (Entity.Location, direction);
+        if (targetDistrict.m_gridLocation != Entity.Location) {
+            return GetAttackableEntity (targetDistrict);
+        }
+        return null;
+    }
+
     void ReshuffleAttackDeck () {
         Debug.Log ("[EntityAttack] Shuffling attack action deck!");
         m_remainingActions.Clear ();

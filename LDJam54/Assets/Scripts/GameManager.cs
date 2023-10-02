@@ -17,16 +17,20 @@ public class GameManager : MonoBehaviour {
    public List<Entity> m_playerEntities = new List<Entity> { };
    public List<Entity> m_enemyEntities = new List<Entity> { };
    private static GameState m_currentState = GameState.PLAYER_TURN;
+   public static Entity m_currentlySelectedEntity = null;
    void Start () {
       DistrictManager.instance.Init ();
       EntityManager.instance.Init ();
       GridCameraController.instance.mouseLeftClickEvent.AddListener (OnTileClick);
       GlobalEvents.OnEntityKilled.AddListener (OnEntityDeath);
-      StartNewGame ();
+      GlobalEvents.OnEntitySelected.AddListener (OnEntitySelected);
+      GlobalEvents.OnEndPlayerTurn.AddListener (OnEndPlayerTurn);
+      StartCoroutine (StartNewGame ());
    }
 
-   public void StartNewGame () {
+   public IEnumerator StartNewGame () {
       State = GameState.SET_UP;
+      yield return new WaitForSeconds (0.1f);
       // Place tanks
       // Random D
       GridLocations randomDColumn = new List<GridLocations> { GridLocations.D1, GridLocations.D2, GridLocations.D3, GridLocations.D4, GridLocations.D5 }[Random.Range (0, 4)];
@@ -54,10 +58,27 @@ public class GameManager : MonoBehaviour {
       Entity monster = EntityManager.instance.SpawnEntity (EntityType.MONSTER_CERATOLISK);
       DistrictManager.instance.SetEntityLocation (monster, randomMonsterSpawn);
 
+      // Change state
+      State = GameState.PLAYER_TURN;
    }
 
    void OnTileClick (TileInfo info) {
+      Debug.Log ("[GameManager] Clicked tile " + info.location);
 
+   }
+   void OnEntitySelected (EntityEventArgs args) {
+      if (State == GameState.PLAYER_TURN) {
+         if (args.owner != m_currentlySelectedEntity && m_currentlySelectedEntity != null) {
+            m_currentlySelectedEntity?.m_playerMovementController.ResetArrows ();
+         }
+         if (args.owner.m_data.m_faction == EntityFaction.PLAYER) {
+            if (args.owner.entityMovement.MovementLeft > 0) {
+               args.owner.m_playerMovementController.SetActiveDirections (args.owner.entityMovement.GetPermittedMovementDirections ());
+               args.owner.m_playerMovementController.SetAttackDirections (args.owner.entityAttack.GetPermittedAttackDirections ());
+               m_currentlySelectedEntity = args.owner;
+            }
+         }
+      }
    }
 
    public void SpawnMech (EntityType type) {
@@ -71,7 +92,13 @@ public class GameManager : MonoBehaviour {
       if (m_playerEntities.Contains (entity.owner)) {
          m_playerEntities.Remove (entity.owner);
       }
+   }
 
+   void OnEndPlayerTurn (GameState newState) {
+      // For now we just do this
+      foreach (Entity playerEntity in m_playerEntities) {
+         playerEntity.entityMovement.ResetMovement ();
+      }
    }
 
    public static GameState State {
