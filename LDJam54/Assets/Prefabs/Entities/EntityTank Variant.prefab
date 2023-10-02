@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1468739835061494583, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.37
+      objectReference: {fileID: 0}
     - target: {fileID: 1881971421402853204, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
       propertyPath: m_Name
       value: EntityTank Variant
@@ -31,6 +35,10 @@ PrefabInstance:
     - target: {fileID: 2876596539540566371, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
       propertyPath: m_Offset.y
       value: -0.041513085
+      objectReference: {fileID: 0}
+    - target: {fileID: 2962304601127768983, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3611338234785519367, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -91,6 +99,14 @@ PrefabInstance:
     - target: {fileID: 6466839186114163365, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6942352567784006167, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1004571924, guid: 86109b4a116f3634fb4676e97dd38239, type: 3}
+    - target: {fileID: 6942352567784006167, guid: ad32b45c29c6d1b498dc2cab9401459d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

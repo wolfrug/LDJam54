@@ -22,4 +22,6 @@ MonoBehaviour:
   m_canMoveInOcean: 1
   m_animator: {fileID: 0}
   m_entityMovementActions: []
-  m_entityAttackActions: []
+  m_entityAttackActions:
+  - {fileID: 11400000, guid: d23e206755c2c8d47b7362f2d340fa30, type: 2}
+  - {fileID: 11400000, guid: 1455a6fbaf6224642af30d81fbbfc156, type: 2}

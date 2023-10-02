@@ -21,12 +21,27 @@ public class EntityAttack : EntityComponent {
             if (m_attacksLeft > 0) {
                 Entity foundEntity = GetAttackableEntity (args.direction);
                 if (foundEntity != null) {
-                    foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs(), Entity, foundEntity, null, "", 1), 0);
+                    foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs (), Entity, foundEntity, null, "", 1), 0);
                 }
-                m_attacksLeft--;
+                AttacksLeft--;
             }
         }
     }
+
+    public bool AutoAttackRandomAdjacentEnemy () {
+        if (AttacksLeft > 0) {
+            foreach (MovementDirections dir in GetPermittedAttackDirections ()) {
+                Entity foundEntity = GetAttackableEntity (dir);
+                if (foundEntity != null) {
+                    foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs (), Entity, foundEntity, null, "", 1), 0);
+                    AttacksLeft--;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public int AttacksLeft {
         get {
             return m_attacksLeft;
@@ -44,7 +59,7 @@ public class EntityAttack : EntityComponent {
     public void PerformRandomAttackAction (bool discardWhenDone = true) {
         if (m_attackActions.Count > 0) {
             if (m_remainingActions.Count > 0) {
-                EntityActionData randomAction = m_remainingActions[Random.Range (0, m_remainingActions.Count - 1)];
+                EntityActionData randomAction = GetRandomAttackAction ();
                 ActionResultArgs reply = randomAction.Perform (new ActionArgs (Entity, null));
                 if (reply.stringVal == "Shuffle") {
                     ReshuffleAttackDeck ();
@@ -61,6 +76,20 @@ public class EntityAttack : EntityComponent {
                 PerformRandomAttackAction (discardWhenDone);
             }
         }
+    }
+
+    public EntityActionData GetRandomAttackAction () {
+        if (m_attackActions.Count > 0) {
+            if (m_remainingActions.Count > 0) {
+                EntityActionData randomAction = m_remainingActions[Random.Range (0, m_remainingActions.Count - 1)];
+                if (randomAction != null) {
+                    Debug.Log ("[EntityAttack] Pulled random action " + randomAction.ID);
+                }
+                GlobalEvents.InvokeOnMonsterAttackCardDrawn (new ActionResultArgs (new ActionArgs (), Entity, null, randomAction));
+                return randomAction;
+            }
+        }
+        return null;
     }
 
     public List<MovementDirections> GetPermittedAttackDirections () {

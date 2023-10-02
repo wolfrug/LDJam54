@@ -18,8 +18,10 @@ MonoBehaviour:
   m_value: 5
   m_prefab: {fileID: 1607759117319711408, guid: 13447ca138f885d4aa6b1ef2a885532c, type: 3}
   m_health: 1
-  m_movementPoints: 1
+  m_movementPoints: 2
   m_canMoveInOcean: 1
   m_animator: {fileID: 0}
   m_entityMovementActions: []
-  m_entityAttackActions: []
+  m_entityAttackActions:
+  - {fileID: 11400000, guid: 7e043ffbfb87b3e4e9743ba01d54c0f1, type: 2}
+  - {fileID: 11400000, guid: 3e265de1d97f07443b05b77c96c2ff20, type: 2}

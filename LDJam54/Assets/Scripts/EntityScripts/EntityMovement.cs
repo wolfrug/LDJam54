@@ -23,9 +23,11 @@ public class EntityMovement : EntityComponent {
 
     public void PlayerMoveInput (MovementArgs args) {
         if (args.owner == Entity) {
-            if (m_movementActionsLeft > 0) {
-                MoveInDirection (args.direction);
-                m_movementActionsLeft--;
+            if (!Entity.entityHealth.IsDead) {
+                if (m_movementActionsLeft > 0) {
+                    MoveInDirection (args.direction);
+                    m_movementActionsLeft--;
+                }
             }
         }
     }
@@ -82,6 +84,18 @@ public class EntityMovement : EntityComponent {
         }
     }
 
+    public bool CanMove {
+        get {
+            if (Entity.entityEffects.HasEffect (EffectType.STUN)) {
+                return false;
+            }
+            if (Entity.entityHealth.IsDead) {
+                return false;
+            }
+            return true;
+        }
+    }
+
     [NaughtyAttributes.Button]
     public List<MovementDirections> GetPermittedMovementDirections () {
         List<MovementDirections> returnList = new List<MovementDirections> { MovementDirections.LEFT, MovementDirections.RIGHT, MovementDirections.UP, MovementDirections.DOWN };
@@ -109,7 +123,6 @@ public class EntityMovement : EntityComponent {
             ActionResultArgs reply = randomAction.Perform (new ActionArgs (Entity, null));
             if (reply.stringVal == "Shuffle") {
                 ReshuffleMovementDeck ();
-                PerformRandomMovementAction (discardWhenDone);
             } else {
                 if (discardWhenDone) {
                     m_remainingActions.Remove (randomAction);

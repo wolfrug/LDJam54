@@ -28,6 +28,30 @@ public class District : MonoBehaviour {
         foreach (Transform tra in m_entityPositions) {
             m_occupancyDictionary.Add (tra, null);
         }
+        GlobalEvents.OnGameStateChanged.AddListener (OnEnemyTurnStart);
+        GlobalEvents.OnDistrictEntered.AddListener (OnEnemyEnterDistrict);
+    }
+
+    public void OnEnemyTurnStart (GameState state) {
+        if (state == GameState.ENEMY_TURN) {
+            if (m_data.m_damageMonsterPerTurn > 0) {
+                foreach (Entity entity in m_entitiesContained) {
+                    if (entity.m_data.m_faction == EntityFaction.ENEMY) {
+                        entity.AttackEntity (new ActionResultArgs (new ActionArgs (), null, entity, null, "", m_data.m_damageMonsterPerTurn), 0);
+                    }
+                }
+            }
+        }
+    }
+    public void OnEnemyEnterDistrict (DistrictEventArgs args) {
+        if (args.owner == this) {
+            if (m_data.m_stunOnEnter && args.instigator.m_data.m_faction == EntityFaction.ENEMY) {
+                args.instigator.entityEffects.AddEffect (EffectType.STUN);
+            }
+            if (m_data.m_autoWreckOnEnter && args.instigator.m_data.m_faction == EntityFaction.ENEMY) {
+                AttemptWreckDistrict ();
+            }
+        }
     }
 
     public Vector3 AddEntity (Entity newEntity) {

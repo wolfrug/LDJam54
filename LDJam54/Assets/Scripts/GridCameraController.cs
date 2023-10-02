@@ -80,7 +80,7 @@ public class GridCameraController : MonoBehaviour {
 
     public void StartPanCamera () {
         //  Debug.Log ("Starting camera pan");
-        panCameraScript.target.transform.position = mainvcam.m_Follow.position;
+        //panCameraScript.target.transform.position = mainvcam.m_Follow.position;
         panCamera.Priority = 11;
         DefaultZoom ();
     }
@@ -90,12 +90,15 @@ public class GridCameraController : MonoBehaviour {
         panCamera.Priority = 9;
         DefaultZoom ();
     }
-    public void SetPanCameraTarget (Transform target) {
+    public void SetPanCameraTarget (Transform target, bool panToTarget = false) {
         panCameraScript.target.position = target.position;
+        if (panToTarget) {
+            PanToCameraTarget ();
+        }
     }
     public void PanToCameraTarget () {
         panCamera.Priority = 11;
-        DefaultZoom ();
+        //DefaultZoom ();
     }
 
     public void SetZoomLevel (float zoomLevel) {
@@ -154,7 +157,7 @@ public class GridCameraController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (GameManager.State == GameState.PLAYER_TURN) {
+        if (GameManager.State != GameState.ENEMY_TURN) {
             RaycastHit2D hit = Physics2D.Raycast (mainCam.ScreenToWorldPoint (Input.mousePosition), Vector2.zero, cameraDistance, hitMask);
             if (Input.GetMouseButtonDown (0)) {
                 //Debug.Log ("Clicked");

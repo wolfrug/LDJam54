@@ -21,7 +21,7 @@ public class MouseRts : MonoBehaviour {
 
     // Update is called once per frame
     void FixedUpdate () {
-        if (GameManager.State == GameState.PLAYER_TURN && active) { // only allow panning camera in game mode
+        if (GameManager.State != GameState.ENEMY_TURN && active) { // only allow panning camera in game mode
             // Init camera translation for this frame.
             var translation = Vector3.zero;
 

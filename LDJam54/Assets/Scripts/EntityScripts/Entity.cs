@@ -24,8 +24,8 @@ public struct EntityEventArgs {
 public class Entity : MonoBehaviour {
 
     public EntityData m_data;
-
     public PlayerMovementController m_playerMovementController;
+    public GameObject m_avatarDestroyed;
     public EntityMovement entityMovement;
     public EntityAttack entityAttack;
     public EntityHealth entityHealth;
@@ -52,7 +52,7 @@ public class Entity : MonoBehaviour {
     }
     public void AttackEntity (ActionResultArgs args, int knockBackSquares = 0) {
         if (!entityHealth.IsDead && args.target == this) {
-            entityHealth.Health -= args.intVal;
+            entityHealth.Damage (args);
             if (knockBackSquares > 0) {
                 MovementDirections relativeMovement = DistrictManager.instance.GetRelativeDirection (args.owner.Location, Location);
                 entityMovement.MoveInDirection (relativeMovement, knockBackSquares);
@@ -66,6 +66,12 @@ public class Entity : MonoBehaviour {
         }
         if (m_data.m_type == EntityType.AGILE_MECH && args.owner.m_data.m_type == EntityType.MONSTER_CERATOLISK) {
             entityMovement.MoveTo (args.originDistrict.m_gridLocation);
+        }
+        if (m_data.m_type == EntityType.MELEE_MECH && args.owner.m_data.m_type == EntityType.MONSTER_CERATOLISK) {
+            List<MovementDirections> availableSpots = entityMovement.GetPermittedMovementDirections ();
+            MovementDirections randomDirection = availableSpots[Random.Range (0, availableSpots.Count - 1)];
+            args.owner.entityMovement.MoveInDirection (randomDirection);
+            args.owner.entityEffects.AddEffect (EffectType.STUN);
         }
     }
 

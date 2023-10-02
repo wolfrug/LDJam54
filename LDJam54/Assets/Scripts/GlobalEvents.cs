@@ -17,10 +17,12 @@ public class GlobalEvents : MonoBehaviour {
 
     // Game State events
     public static GameStateEvent OnGameStateChanged = new GameStateEvent ();
+    public static GameStateEvent OnSkipPlayerAttack = new GameStateEvent ();
     public static GameStateEvent OnEndPlayerTurn = new GameStateEvent ();
     // Action Events
     public static ActionEvent OnActionPerformed = new ActionEvent ();
     public static ActionEvent OnMonsterMovementCardDrawn = new ActionEvent ();
+    public static ActionEvent OnMonsterAttackCardDrawn = new ActionEvent ();
 
     // Entity Events
     public static EntityEvent OnEntitySpawned = new EntityEvent ();
@@ -47,6 +49,9 @@ public class GlobalEvents : MonoBehaviour {
     public static void InvokeOnGameStateChanged (GameState newState) {
         OnGameStateChanged.Invoke (newState);
     }
+    public static void InvokeOnSkipPlayerAttack (GameState newState) {
+        OnSkipPlayerAttack.Invoke (newState);
+    }
     public static void InvokeOnEndPlayerTurn (GameState newState) {
         OnEndPlayerTurn.Invoke (newState);
     }
@@ -56,6 +61,9 @@ public class GlobalEvents : MonoBehaviour {
     }
     public static void InvokeOnMonsterMovementCardDrawn (ActionResultArgs args) {
         OnMonsterMovementCardDrawn.Invoke (args);
+    }
+    public static void InvokeOnMonsterAttackCardDrawn (ActionResultArgs args) {
+        OnMonsterAttackCardDrawn.Invoke (args);
     }
     // Entity event invokes
     public static void InvokeOnEntityHurt (EntityEventArgs args) {

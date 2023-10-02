@@ -6,9 +6,12 @@ public struct ActionArgs {
     public Entity owner;
     public Entity target;
 
-    public ActionArgs (Entity setOwner, Entity setTarget) {
+    public MovementDirections direction;
+
+    public ActionArgs (Entity setOwner, Entity setTarget, MovementDirections setDirection = MovementDirections.NONE) {
         owner = setOwner;
         target = setTarget;
+        direction = setDirection;
     }
 }
 public struct ActionResultArgs {

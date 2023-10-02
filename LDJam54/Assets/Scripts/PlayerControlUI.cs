@@ -13,7 +13,7 @@ public class PlayerControlUI : MonoBehaviour {
     }
 
     void OnGameStateChanged (GameState newstate) {
-        if (newstate == GameState.PLAYER_TURN) {
+        if (newstate == GameState.PLAYER_TURN_MOVEMENT) {
             m_playerTurn = StartCoroutine (PlayerTurn ());
         } else {
             if (m_playerTurn != null) {
