@@ -5,7 +5,7 @@ using UnityEngine;
 public class EntityHealth : EntityComponent {
 
     private int m_currentHealth = 1;
-    private int m_maxHealth = 1;
+    public int m_maxHealth = 1;
 
     protected override void Init () {
         base.Init ();
@@ -37,9 +37,11 @@ public class EntityHealth : EntityComponent {
                 Entity.m_avatarDestroyed?.SetActive (true); // this is a horrible way of doing this
             }
             if (value < m_currentHealth) {
+                m_currentHealth = value;
                 GlobalEvents.InvokeOnEntityHurt (new EntityEventArgs (Entity, null, this, m_currentHealth - value));
             }
             m_currentHealth = value;
+
         }
     }
 

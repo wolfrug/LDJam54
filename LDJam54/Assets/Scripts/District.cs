@@ -121,7 +121,12 @@ public class District : MonoBehaviour {
 
     public bool AttemptWreckDistrict () {
         if (m_data.m_wreckable) {
-            Wrecked = true;
+            Entity tank = m_entitiesContained.Find ((x) => x.m_data.m_type == EntityType.TANK);
+            if (tank != null) {
+                tank.AttackEntity (new ActionResultArgs (new ActionArgs (), null, tank, null, "", 1), 0);
+            } else {
+                Wrecked = true;
+            }
             return true;
         } else {
             return false;

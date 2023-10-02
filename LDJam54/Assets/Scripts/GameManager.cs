@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState {
    NONE = 0000,
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour {
       GlobalEvents.OnEndPlayerTurn.AddListener (OnEndPlayerTurn);
       GlobalEvents.OnSkipPlayerAttack.AddListener (OnSkipAttack);
       GlobalEvents.OnDistrictEntered.AddListener (OnEnemyMoved);
+      GlobalEvents.OnDistrictWrecked.AddListener (OnDistrictWrecked);
       StartCoroutine (StartNewGame ());
    }
 
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour {
          if (args.owner.m_data.m_faction == EntityFaction.PLAYER) {
             if (args.owner.entityMovement.MovementLeft > 0) {
                args.owner.m_playerMovementController.SetActiveDirections (args.owner.entityMovement.GetPermittedMovementDirections ());
-               args.owner.m_playerMovementController.SetAttackDirections (args.owner.entityAttack.GetPermittedAttackDirections ());
+               //args.owner.m_playerMovementController.SetAttackDirections (args.owner.entityAttack.GetPermittedAttackDirections ());
                m_currentlySelectedEntity = args.owner;
             }
          }
@@ -123,6 +125,12 @@ public class GameManager : MonoBehaviour {
          if (entity.owner == m_playerMech) {
             m_playerMechIsAlive = false;
          }
+         if (m_playerEntities.Count == 0) {
+            EndGame (false);
+         }
+      }
+      if (entity.owner.m_data.m_type == EntityType.MONSTER_CERATOLISK) {
+         EndGame (true);
       }
    }
 
@@ -146,15 +154,36 @@ public class GameManager : MonoBehaviour {
       StartCoroutine (EnemyTurn ());
    }
 
+   int wreckedDistricts = 0;
+   void OnDistrictWrecked (DistrictEventArgs args) {
+      if (args.owner.m_data.m_type == DistrictType.ORBHQ) {
+         EndGame (false);
+      }
+      wreckedDistricts++;
+      if (wreckedDistricts >= 5) {
+         EndGame (false);
+      }
+   }
+
+   void EndGame (bool win = true) {
+      if (win) {
+         SceneManager.LoadScene ("WinScene");
+      } else {
+         SceneManager.LoadScene ("LoseScene");
+      }
+   }
+
    IEnumerator PlayerTurn () {
       State = GameState.PLAYER_TURN_ATTACK;
       GridCameraController.instance.SetPanCameraTarget (cameraFocusPoint, true);
       GridCameraController.instance.SetZoomLevel (25f);
       if (m_playerMechIsAlive) {
-         yield return new WaitUntil (() => State == GameState.PLAYER_TURN_AUTOATTACK);
-      } else {
-         State = GameState.PLAYER_TURN_AUTOATTACK;
+         if (m_playerMech.entityAttack.GetPermittedAttackDirections ().Count > 0) {
+            m_playerMech.m_playerMovementController.SetAttackDirections (m_playerMech.entityAttack.GetPermittedAttackDirections ());
+            yield return new WaitUntil (() => State == GameState.PLAYER_TURN_AUTOATTACK || m_playerMech.entityAttack.AttacksLeft == 0);
+         }
       }
+      State = GameState.PLAYER_TURN_AUTOATTACK;
       // Do airstrikes here
       yield return new WaitForSeconds (1f);
       // Auto-attack with tanks

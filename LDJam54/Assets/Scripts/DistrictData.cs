@@ -7,6 +7,7 @@ public enum DistrictType {
     OCEAN = 1000,
     CITY = 2000,
     SPECIAL = 3000,
+    ORBHQ = 3001,
 }
 
 [CreateAssetMenu (fileName = "Data", menuName = "District Data", order = 1)]

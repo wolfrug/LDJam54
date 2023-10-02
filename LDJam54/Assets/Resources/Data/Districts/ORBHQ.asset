@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ORBHQ
   m_EditorClassIdentifier: 
   m_displayName: Orb HQ
-  m_type: 3000
+  m_type: 3001
   m_prefab: {fileID: 0}
   m_gridLocation: 29
   m_wreckable: 1

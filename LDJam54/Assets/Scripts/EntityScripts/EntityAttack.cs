@@ -21,7 +21,12 @@ public class EntityAttack : EntityComponent {
             if (m_attacksLeft > 0) {
                 Entity foundEntity = GetAttackableEntity (args.direction);
                 if (foundEntity != null) {
-                    foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs (), Entity, foundEntity, null, "", 1), 0);
+                    if (m_attackActions.Count > 0) {
+                        m_attackActions[0].Perform (new ActionArgs (Entity, foundEntity, args.direction));
+                    } else {
+                        foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs (), Entity, foundEntity, null, "", 1), 0);
+                    }
+                    Entity.m_playerMovementController.ResetArrows ();
                 }
                 AttacksLeft--;
             }
@@ -33,7 +38,11 @@ public class EntityAttack : EntityComponent {
             foreach (MovementDirections dir in GetPermittedAttackDirections ()) {
                 Entity foundEntity = GetAttackableEntity (dir);
                 if (foundEntity != null) {
-                    foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs (), Entity, foundEntity, null, "", 1), 0);
+                    if (m_attackActions.Count > 0) {
+                        m_attackActions[0].Perform (new ActionArgs (Entity, foundEntity, dir));
+                    } else {
+                        foundEntity.AttackEntity (new ActionResultArgs (new ActionArgs (), Entity, foundEntity, null, "", 1), 0);
+                    }
                     AttacksLeft--;
                     return true;
                 }
@@ -94,7 +103,7 @@ public class EntityAttack : EntityComponent {
 
     public List<MovementDirections> GetPermittedAttackDirections () {
         List<MovementDirections> returnList = new List<MovementDirections> { };
-        foreach (MovementDirections dir in new List<MovementDirections> { MovementDirections.LEFT, MovementDirections.RIGHT, MovementDirections.UP, MovementDirections.DOWN, MovementDirections.DIAGONAL_UP_RIGHT, MovementDirections.DIAGONAL_UP_LEFT, MovementDirections.DIAGONAL_DOWN_RIGHT, MovementDirections.DIAGONAL_DOWN_LEFT }) {
+        foreach (MovementDirections dir in new List<MovementDirections> { MovementDirections.LEFT, MovementDirections.RIGHT, MovementDirections.UP, MovementDirections.DOWN }) {
             District targetDistrict = DistrictManager.instance.GetDistrictInDirection (Entity.Location, dir, true);
             if (targetDistrict.m_gridLocation != Entity.Location) {
                 if (GetAttackableEntity (targetDistrict) != null) {

@@ -70,12 +70,15 @@ public class PlayerMovementController : MonoBehaviour {
         m_attackButtons.Clear ();
         foreach (MovementButton btn in m_movementButtons) {
             btn.m_buttonImage.color = Color.white;
+            btn.m_button.gameObject.SetActive (true);
+            btn.m_button.interactable = false;
         }
         foreach (MovementDirections dir in attackDirections) {
             MovementButton btn = m_movementButtons.Find ((x) => x.m_direction == dir);
             if (btn != null) {
                 btn.m_buttonImage.color = m_attackColor;
                 btn.m_button.interactable = true;
+                btn.m_button.gameObject.SetActive (true);
                 m_attackButtons.Add (btn);
             }
         }
