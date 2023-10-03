@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class EntityEffects : EntityComponent {
@@ -12,12 +11,12 @@ public class EntityEffects : EntityComponent {
     protected override void Init () {
         base.Init ();
         animator = Entity.gameObject.GetComponent<Animator> ();
-        if (animator == null) {
+       /* if (animator == null) {
             animator = Entity.gameObject.AddComponent<Animator> ();
         }
         if (Entity.m_data.m_animator != null) {
             animator.runtimeAnimatorController = Entity.m_data.m_animator;
-        }
+        }*/
         GlobalEvents.OnEntityHoverOn.AddListener (OnEntityHoverOn);
         GlobalEvents.OnEntityHoverOff.AddListener (OnEntityHoverOff);
     }
